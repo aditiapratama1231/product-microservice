@@ -1,22 +1,19 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"library/config"
 	"library/product"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	db := config.DBInit()
-	prod := product.NewProduct(db)
-
 	r := gin.Default()
+	db := config.DBInit()
+	product := product.Product{DB: db}
 
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"data": prod.GetProducts(),
-		})
-	})
+	r.GET("/products", product.GetProducts)
+	r.POST("/products", product.CreateProduct)
 
 	r.Run()
 }
