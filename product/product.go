@@ -1,7 +1,7 @@
 package product
 
 import (
-	"library/model"
+	"product/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

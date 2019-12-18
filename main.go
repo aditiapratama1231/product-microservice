@@ -1,10 +1,11 @@
 package main
 
 import (
-	"library/config"
-	"library/product"
+	"product/config"
+	"product/product"
 
 	"github.com/gin-gonic/gin"
+	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
 func main() {
@@ -12,8 +13,15 @@ func main() {
 	db := config.DBInit()
 	product := product.Product{DB: db}
 
+	p := ginprometheus.NewPrometheus("gin")
+	p.Use(r)
+
+	config.RegisterConsul()
+
 	r.GET("/products", product.GetProducts)
 	r.POST("/products", product.CreateProduct)
 
-	r.Run()
+	r.GET("/healthcheck", config.Healthcheck)
+
+	r.Run() //port 8080
 }
