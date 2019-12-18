@@ -19,6 +19,7 @@ func main() {
 	config.RegisterConsul()
 
 	r.GET("/products", product.GetProducts)
+	r.GET("/product/:id", product.GetProductById)
 	r.POST("/products", product.CreateProduct)
 
 	r.GET("/healthcheck", config.Healthcheck)

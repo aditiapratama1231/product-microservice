@@ -28,6 +28,20 @@ func (p *Product) GetProducts(c *gin.Context) {
 	})
 }
 
+func (p *Product) GetProductById(c *gin.Context) {
+	var product model.Product
+	db := p.DB
+	id := c.Param("id")
+
+	db.Where("id = ?", id).Find(&product)
+
+	c.JSON(200, gin.H{
+		"product_name": product.ProductName,
+		"sku":          product.SKU,
+		"qty":          product.Qty,
+	})
+}
+
 func (p *Product) CreateProduct(c *gin.Context) {
 	var request product
 
