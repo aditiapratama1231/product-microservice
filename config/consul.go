@@ -19,7 +19,7 @@ func RegisterConsul() {
 		log.Fatalln(err)
 	}
 
-	port, err := strconv.Atoi(port()[1:len(port())])
+	port, err := strconv.Atoi(Port()[1:len(Port())])
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -27,16 +27,16 @@ func RegisterConsul() {
 	register := new(consulapi.AgentServiceRegistration)
 	register.ID = "product-microservice"
 	register.Name = "product-microservice"
-	register.Address = hostname()
+	register.Address = Hostname()
 	register.Port = port
 	register.Check = new(consulapi.AgentServiceCheck)
-	register.Check.HTTP = fmt.Sprintf("http://%s:%v/healthcheck", hostname(), port)
+	register.Check.HTTP = fmt.Sprintf("http://%s:%v/healthcheck", Hostname(), port)
 	register.Check.Interval = "5s"
 	register.Check.Timeout = "3s"
 	consul.Agent().ServiceRegister(register)
 }
 
-func port() string {
+func Port() string {
 	p := os.Getenv("PORT")
 	if len(strings.TrimSpace(p)) == 0 {
 		return ":8080"
@@ -44,7 +44,7 @@ func port() string {
 	return fmt.Sprintf(":%s", p)
 }
 
-func hostname() string {
+func Hostname() string {
 	hn, err := os.Hostname()
 	if err != nil {
 		log.Fatalln(err)

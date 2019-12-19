@@ -17,6 +17,7 @@ func main() {
 	p.Use(r)
 
 	config.RegisterConsul()
+	config.RegisterZipkin()
 
 	r.GET("/products", product.GetProducts)
 	r.GET("/product/:id", product.GetProductById)

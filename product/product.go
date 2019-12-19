@@ -1,10 +1,13 @@
 package product
 
 import (
+	"math/rand"
 	"product/model"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"go.opencensus.io/trace"
 )
 
 type Product struct {
@@ -26,6 +29,8 @@ func (p *Product) GetProducts(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"data": products,
 	})
+
+	serviceb(c)
 }
 
 func (p *Product) GetProductById(c *gin.Context) {
@@ -56,4 +61,10 @@ func (p *Product) CreateProduct(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "success",
 	})
+}
+
+func serviceb(c *gin.Context) {
+	_, span := trace.StartSpan(c, "/products")
+	defer span.End()
+	time.Sleep(time.Duration(rand.Intn(800)+200) * time.Millisecond)
 }
